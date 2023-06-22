@@ -1,10 +1,9 @@
 import React from 'react';import './App.css';
-import logo from '../src/img/dirstatlg.png'
+import logo from '../src/img/ipStatlogo.png'
 import gitLogo from '../src/img/github-mark-white.png'
-import menulogo from '../src/img/menu.png'
-import search from '../src/img/search.svg'
-import globe from '../src/img/globe.svg'
-import business from '../src/img/business.png'
+import menulogo from '../src/img/menuBtn.png'
+import search from '../src/img/searchBtn.png'
+import globe from '../src/img/globe.png'
 import Footer from './components/footer';
 import MainGrid from './components/mainGrid';
 import { useState } from 'react';
@@ -20,18 +19,26 @@ export default function App() {
     switch (opt)
     {
       case 1:
+        setIp('')
+        setSerachedIp(false)
         setIsMyIp(false)
         break;
       case 2:
+        setIp('')
         setIsMyIp(true)
         break;
       case 3:
-        if((document.getElementById('ip_adress') as HTMLInputElement).value === null)
+        setIp('')
+        if((document.getElementById('ip_adress') as HTMLInputElement).value === null
+        || (document.getElementById('ip_adress') as HTMLInputElement).value === "")
         {
           alert("Fill filed with valid IP.")                 
         }
         else{
-          setIp((document.getElementById('ip_adress') as HTMLInputElement).value)
+          console.log((document.getElementById('ip_adress') as HTMLInputElement).value)                    
+          setIp((document.getElementById('ip_adress') as HTMLInputElement).value)          
+          setSerachedIp(true)
+          setIsMyIp(false)
         }
         break;
       default:
@@ -41,7 +48,7 @@ export default function App() {
 
   return (
     <div className=''>
-      <nav className='p-1 h-32 flex bg-cyan-700'>
+      <nav className='p-1 h-32 flex bg-rose-700'>
           <div className='text-black w-64 bg-red'>
               <a className=''>
                 <div 
@@ -49,7 +56,7 @@ export default function App() {
                     onClick={handleShow}
                 >
                   <img 
-                    className='rounded p-3 h-24 h-24 hover:bg-cyan-600 hover:mix-soft-light' 
+                    className='rounded p-3 h-24 h-24 hover:bg-rose-600 hover:mix-soft-light' 
                     src={menulogo}
                   >
                   </img>
@@ -64,10 +71,10 @@ export default function App() {
         {
           showSideBar ?
           (
-            <div className='container p-5 bg-cyan-950 w-48 h-auto text-center'>  
+            <div className='container p-5 bg-rose-950 w-48 h-auto text-center'>  
               <div className='mt-5'>                
                 <div>
-                    <div className='rounded text-white text-lg font-bold w-full hover:bg-cyan-700'> 
+                    <div className='rounded text-white text-lg font-bold w-full hover:bg-rose-700'> 
                       <a onClick={()=> selectFeature(1)}>
                         <img className='rounded ml-7 h-24 w-24 p-3' src={search}></img>
                         Search IP
@@ -75,7 +82,7 @@ export default function App() {
                     </div>   
                 </div>
                 <div className='mt-20'>
-                    <div className='rounded text-white text-lg font-bold w-full hover:bg-cyan-700'>                      
+                    <div className='rounded text-white text-lg font-bold w-full hover:bg-rose-700'>                      
                       <a onClick={()=> selectFeature(2)}>
                         <img className='rounded ml-7 h-24 w-24 p-3' src={globe}></img>
                         My IP Info
@@ -83,7 +90,7 @@ export default function App() {
                     </div>   
                 </div>
                 <div className='mt-20'>
-                    <div className='rounded text-white text-lg font-bold w-full hover:bg-cyan-700'>                      
+                    <div className='rounded text-white text-lg font-bold w-full hover:bg-rose-700'>                      
                       <img className='rounded ml-7 h-24 w-24 p-3' src={gitLogo}></img>
                       More Projects
                     </div> 

@@ -1,20 +1,10 @@
 import React, {  useState } from "react";
 import { useEffect } from "react";
 import GridInfo  from './grid/gridInfo';
-import { ipDataModel } from '../apiModels/ipDataModel';
+import { ipDataModel } from '../types/ipDataModel';
+import { myIp } from '../types/myIp';
 import {getIp} from './api/ipApi'
 import {getMyIp} from './api/ipApi'
-
-type myIp = {
-  country_code: string,
-  country_name: string,
-  city: string,
-  postal: string,
-  latitude: string,
-  longitude: string,
-  IPv4: string,
-  state: string,
-}
 
 type option = {
   service: string,
@@ -22,115 +12,118 @@ type option = {
 
 export default function MainGrid (props: option){                 
   // internal
-  const op = props.service;
-  var internalIpInfo : ipDataModel = {
-    model : {
-      ip : "",
-      hostname : "",
-      type: "",
-      continent_code: "",
-      continent_name: "",
-      country_code: "", 
-      country_name: "", 
-      region_code : "",
-      region_name: "",
-      city: "", 
-      zip: -1,
-      latitude: -1,
-      longitude: -1,
-      location: {
-          geoname_id: -1,
-          capital: "",
-          country_flag: "", //"https://assets.ipstack.com/images/assets/flags_svg/us.svg",
-          country_flag_emoji : "",
-          country_flag_emoji_unicode : "",
-          calling_code : -1,
-          is_eu : false,
-          languages :
-            {
-              code: "", 
-              name: "",
-              native: "",
-            }               
-      },
-      time_zone : {
-          id : "",
-          current_time: "",
-          gmt_offset : -1,
-          code : "",
-          is_daylight_saving : false,
-      },
-      currency : {
-          code : "",
-          name: "",
-          plural : "",
-          symbol : "",
-          symbol_native : "",
-      },
-      connection : {
-      asn: -1,
-      isp: "",
-      },
-      security : {
-          is_proxy : false,
-          proxy_type : "",
-          is_crawler: "",
-          crawler_name: "",
-          crawler_type : "",
-          is_tor: false,
-          threat_level: "",
-          threat_types: "",   
-      }  
-    }
-  }             
+  const op = props.service;          
 
   // useState
-  const [ip,setIP] = useState('')        
-  const [dataState, setDataState] = useState() 
+  var [ip,setIP] = useState <ipDataModel | undefined>(undefined)  
+  const [showIpPage, setShow] = useState(false)
+  const [myIp, setMyIP] = useState <myIp>()    
+  const [mainIp, setMainIp] = useState(false)
   
   // functions
+  function delay(delay: number) {
+    return new Promise(r => {
+        setTimeout(r, delay);
+    })
+  }
+
   const getMyIpData = async() =>{
     if(ip === undefined)
     {
       var res = await getMyIp()   
-      if(res!== undefined)
-        setIP(res.data)
+      if(res!== undefined)        
+        setMyIP(res)
     }
+    
+    if(myIp !== undefined)
+      getIpData(myIp.IPv4)
   }
-  const getIpData = async(ip_ : string) =>{
+
+  const getIpData = async (ip_ : string) =>{
     if(ip === undefined)
+    {      
+      setIP(await getIp(ip_).then((res) => {return res}))                    
+      setShow(true)
+    }    
+  }
+
+  const getMyIpInfo = () =>{
+    if(myIp !== undefined)
     {
-      var res = await getIp(ip_)   
-      if(res!== undefined)
-        setIP(res.data)
+      getIpData(myIp.IPv4)
     }
   }
 
   // useEffect
   useEffect(()=>{   
-    if(op === '')     
-      getMyIpData()
-    else{
-      getIpData(op)
+    if(op === "")    
+    {
+      if(myIp === undefined) 
+        getMyIpData()
+    }
+    else{      
+      if(ip === undefined)         
+        getIpData(op)
     }    
-  },[])
+  })
+
+  useEffect(() => {
+    if(ip !== undefined)
+      setMainIp(true)
+  }, [ip]);
+  
+  useEffect(() => {
+    if(myIp !== undefined)      
+      setMainIp(true)
+      getMyIpInfo()
+  }, [myIp]);
   
   // jsx
   return(
-    <div className='text-white w-full h-screen p-10 text-slate-200 bg-slate-700'>                                  
-      <div className="rounded list-group p-10 overflow-y-auto w-auto h-auto text-white text-2xl bg-gray-950">                                     
+    <div className='text-white w-full h-full p-10 text-slate-200 bg-slate-700'>                                  
+      <div className="rounded list-group p-10 w-auto h-auto text-white text-2xl bg-gray-950">                                     
         <div>          
           {
-            internalIpInfo.model.ip === "1111" ?
+            showIpPage?
             (
-              <div></div>
-            )
+              ip && mainIp ?
+              (
+                <GridInfo                    
+                  ip= {ip.ip}
+                  hostname={ip.hostname}
+                  type={ip.type}
+                  continent_code={ip.continent_code}
+                  continent_name={ip.continent_name}
+                  country_code={ip.country_code}
+                  country_name={ip.country_name}
+                  region_code={ip.region_code}
+                  region_name={ip.region_name}
+                  city={ip.city}
+                  zip={ip.zip}
+                  latitude={ip.latitude}
+                  longitude={ip.longitude}
+                  location={ip.location}
+                  time_zone={ip.time_zone}
+                  currency={ip.currency}
+                  connection={ip.connection}
+                  security={ip.security}
+                ></GridInfo>
+              )
+              :              
+              (
+                <div role="status">
+                    <svg aria-hidden="true" className="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+                    </svg>
+                    <span className="sr-only">Loading...</span>
+                </div>
+              )
+            )  
             :
             (
-              <GridInfo                    
-                model={internalIpInfo.model}
-              ></GridInfo>
-            )              
+              <div></div>            
+            )                                    
           }
         </div>                 
       </div>

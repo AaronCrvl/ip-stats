@@ -1,32 +1,31 @@
 import React from 'react';
+import { securityType } from '../../types/securityType';
 
-type securityType = {
-    security : {
-        is_proxy : boolean
-        proxy_type : string
-        is_crawler: string
-        crawler_name: string
-        crawler_type : string
-        is_tor: boolean
-        threat_level: string
-        threat_types: string   
-    } 
-}
+export default function Security() {
+    //const data = props.security
 
-export default function Security(props: securityType) {
     return (
-        <div className='container rounded p-10'>
-            <p className='text-4xl text-white font-bold mb-10'>Security</p>
-            <span className="inline-grid grid-cols-2 gap-4">
-                <span className='text-white font-bold'>Is Proxy?: </span><span>02</span>
-                <span className='text-white font-bold'>Proxy Type: </span><span>02</span>
-                <span className='text-white font-bold'>Is Crawler?: </span><span>02</span>
-                <span className='text-white font-bold'>Crawler Name: </span><span>02</span>
-                <span className='text-white font-bold'>Crawler Type:</span><span>02</span>
-                <span className='text-white font-bold'>Is Tor?:</span><span>02</span>
-                <span className='text-white font-bold'>Threat Level:</span><span>02</span>
-                <span className='text-white font-bold'>Threat Types:</span><span>02</span>
-            </span>     
-        </div>   
+        <div>                   
+            <div className='container rounded p-10'>
+                <p className='text-4xl text-white font-bold mb-10'>Security</p>
+                <span className="inline-grid grid-cols-2 gap-4">
+                    The request didn't return security information.
+                </span>     
+            </div> 
+                        
+            {/* // <div className='container rounded p-10'>
+            //     <p className='text-4xl text-white font-bold mb-10'>Security</p>
+            //     <span className="inline-grid grid-cols-2 gap-4">
+            //         <span className='text-white font-bold'>Is Proxy?: </span><span>{data.is_proxy}</span>
+            //         <span className='text-white font-bold'>Proxy Type: </span><span>{data.proxy_type}</span>
+            //         <span className='text-white font-bold'>Is Crawler?: </span><span>{data.is_crawler}</span>
+            //         <span className='text-white font-bold'>Crawler Name: </span><span>{data.crawler_name}</span>
+            //         <span className='text-white font-bold'>Crawler Type:</span><span>{data.crawler_type}</span>
+            //         <span className='text-white font-bold'>Is Tor?:</span><span>{data.is_tor}</span>
+            //         <span className='text-white font-bold'>Threat Level:</span><span>{data.threat_level}</span>
+            //         <span className='text-white font-bold'>Threat Types:</span><span>{data.threat_types}</span>
+            //     </span>     
+            // </div>    */}                                
+        </div>
     )
 }

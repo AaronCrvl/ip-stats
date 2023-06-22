@@ -1,38 +1,36 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
+import { locationType } from '../../types/locationType';
 
-type locationType = {
-    location: {
-        geoname_id: number
-        capital: string
-        country_flag: string //"https://assets.ipstack.com/images/assets/flags_svg/us.svg",
-        country_flag_emoji : string
-        country_flag_emoji_unicode : string
-        calling_code : number
-        is_eu : boolean
-        languages :
-            {
-                code: string 
-                name: string
-                native: string
-            }               
-    }   
-}
+type langs = {
+    code: string 
+    name: string
+    native: string
+}     
 
 export default function Location(props: locationType) {
-    const data = props;
-    const [ipInfo, setIpInfo] = useState(data)
+    const data = props.location;        
+
+    // acess nested properties
+    type langType = locationType["location"]["languages"];        
+    const langs: any[] = [];
+    const helper = (obj : langType) => {
+        const values: string[] = Object.values(obj) 
+        values.forEach(val => val && typeof val === "object" ? helper(val) : langs.push(val))
+    }
+    helper(data.languages)
 
     return(        
         <div className='container rounded p-10'>
-            <p className='text-4xl text-white font-bold mb-10'>Location</p>
+            <div className='text-4xl text-white font-bold mb-10'>Location</div>
             <span className="inline-grid grid-cols-2 gap-4">
-                <span className='text-white font-bold'>Geoname Id: </span><span>02</span>
-                <span className='text-white font-bold'>Capital: </span><span>02</span>
-                <span className='text-white font-bold'>Calling Code: </span><span>02</span>
-                <span className='text-white font-bold'>Is Eu?: </span><span>02</span>
-                <span className='text-white font-bold'>Langugue Code:</span><span>02</span>
-                <span className='text-white font-bold'>Langugue Name:</span><span>02</span>
-                <span className='text-white font-bold'>Language Native:</span><span>02</span>                
+                <span className='text-white font-bold'>Geoname Id: </span><span>{data.geoname_id}</span>
+                <span className='text-white font-bold'>Capital: </span><span>{data.capital}</span>
+                <span className='text-white font-bold'>Calling Code: </span><span>{data.calling_code}</span>
+                <span className='text-white font-bold'>Is Eu?: </span><span>{data.is_eu === false ? 'True' : 'False'}</span>
+                <span className='text-white font-bold'>Langugue Code:</span><span>{langs[0]}</span>
+                <span className='text-white font-bold'>Langugue Name:</span><span>{langs[1]}</span>
+                <span className='text-white font-bold'>Language Native:</span><span>{langs[2]}</span>                
             </span>     
         </div>   
     )

@@ -1,9 +1,9 @@
 import React from 'react';
-import logo from '../img/dirstatlg.png'
+import logo from '../img/ipStatlogo.png'
 
 export default function Footer(){
     return(
-        <footer className="bg-cyan-950 w-full h-42 md:bg-white red:bg-cyan-800 md:dark:bg-cyan-900 red:border-cyan-700">
+        <footer className="bg-rose-950 w-full h-42 md:bg-white red:bg-rose-800 md:dark:bg-rose-900 red:border-rose-700">
             <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
                 <div className="sm:flex sm:items-center sm:justify-between">
                     <div className='flex p-2 ml-5 hover:animate-bounce'>
