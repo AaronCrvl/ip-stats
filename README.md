@@ -1,6 +1,10 @@
 # ip-stats
 
-This is a *React Js* with *Typescript* project was an experimental one, and was made for users to search for any IP information.
+<strong>This is a *React Js* with *Typescript* project was an experimental one, and was made for users to search for any IP information.</strong>
+
+## please attention !
+<strong>The API that's used for this project is free; therefore, I can only make HTTPS calls without signing a plan, so even with this app on Vercelm for now, you can only test it locally.</strong>
+<strong>For future updates, I'm planing on create my own api to support this project, stay tunned!</strong>
 
 ## Running Features
 - Search any IP
