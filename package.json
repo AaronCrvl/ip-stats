@@ -18,12 +18,12 @@
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
-  "scripts": {
-    "dev": "nodemon server.js",
+  "scripts": {    
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "dev": "nodemon server.js"
   },
   "eslintConfig": {
     "extends": [
