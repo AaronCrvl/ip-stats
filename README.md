@@ -15,9 +15,6 @@
 - See my own IP info (no need for typing)
     - Search geolocation information based on IP latitude and longitude (both of the above options have this)
 ## Execution
-
-Currently, I run this app with the Nodemon tool and the command below. Go to package.json files in the scripts tag make sure to have:
-
 ```Javascript
 npm: npm start dev
 ```
