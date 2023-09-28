@@ -19,10 +19,6 @@
 Currently, I run this app with the Nodemon tool and the command below. Go to package.json files in the scripts tag make sure to have:
 
 ```Javascript
-"dev": "nodemon Server.js",
-```
-
-```Javascript
 npm: npm start dev
 ```
 
